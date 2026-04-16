@@ -1,0 +1,138 @@
+@import "tailwindcss";
+@import "tailwind-animations";
+
+@theme {
+  --color-graphite: #2d2d2d;
+  --color-offWhite: #f9f9f9;
+  --color-primary: #121212;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-sans: "Noto Sans", sans-serif;
+
+  --spacing-80px: 64px;
+  --spacing-layout: 64px;
+  --color-hologram-cyan: #00f2ff;
+}
+
+:root {
+  --graphite: #2d2d2d;
+  --off-white: #f9f9f9;
+  --mesh-color: rgba(45, 45, 45, 0.04);
+  --layout-padding: clamp(16px, 4vw, 48px);
+}
+
+@media (max-height: 800px) {
+  :root {
+    --layout-padding: 32px;
+  }
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--off-white);
+  color: var(--graphite);
+}
+.mesh-pattern {
+  background-image:
+    linear-gradient(var(--mesh-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mesh-color) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+.global-padding {
+  padding: var(--layout-padding);
+}
+.content-container {
+  padding-left: var(--layout-padding);
+  padding-right: var(--layout-padding);
+}
+
+/* codigo de habilidades técnicas */
+
+.grid-line-x {
+  height: 1px;
+  width: 100%;
+  background-color: rgba(45, 45, 45, 0.08);
+}
+.grid-line-y {
+  width: 1px;
+  height: 100%;
+  background-color: rgba(45, 45, 45, 0.08);
+}
+
+/* codigo de experiencia */
+
+.outline-text {
+  -webkit-text-stroke: 1px var(--graphite);
+}
+.project-card {
+  border: 1px solid rgba(45, 45, 45, 0.1);
+  transition: all 0.3s ease;
+}
+.project-card:hover {
+  border-color: var(--graphite);
+  background: rgba(45, 45, 45, 0.02);
+}
+
+/* codigo de contacto */
+
+/* Utilidades de Contacto */
+.text-primary {
+  color: var(--graphite);
+}
+.bg-primary {
+  background-color: var(--graphite);
+}
+.border-primary {
+  border-color: var(--graphite);
+}
+
+.blueprint-grid {
+  background-image:
+    linear-gradient(to right, #dbe0e6 1px, transparent 1px),
+    linear-gradient(to bottom, #dbe0e6 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.dark .blueprint-grid {
+  background-image:
+    linear-gradient(to right, #1e293b 1px, transparent 1px),
+    linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+}
+.outline-text-transparent {
+  -webkit-text-stroke: 1px #111418;
+  color: transparent;
+}
+.dark .outline-text-transparent {
+  -webkit-text-stroke: 1px #f6f7f8;
+}
+
+@keyframes scan {
+  0%,
+  100% {
+    top: 0;
+    opacity: 0;
+  }
+  50% {
+    top: 100%;
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-scan {
+  animation: scan 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 3s linear infinite;
+}

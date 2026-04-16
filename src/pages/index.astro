@@ -1,0 +1,67 @@
+---
+import Welcome from "../components/Welcome.astro";
+import Layout from "../layouts/Layout.astro";
+import Habilidades from "../components/habilidades.astro";
+import Experiencia from "../components/Experiencia.astro";
+import Proyectos from "../components/Proyectos.astro";
+import Contacto from "../components/Contacto.astro";
+---
+
+<Layout title="Bienvenido a mi Portafolio">
+  <section
+    id="home"
+    class="md:snap-start min-h-dvh w-full relative overflow-x-hidden transition-all duration-700 flex flex-col justify-center items-center"
+    data-aos
+  >
+    <Welcome />
+  </section>
+  <section
+    id="stack"
+    class="md:snap-start min-h-dvh w-full relative overflow-x-hidden transition-all duration-700 opacity-0 pointer-events-none flex flex-col justify-center items-center py-16"
+    data-aos
+  >
+    <Habilidades />
+  </section>
+  <section
+    id="experience"
+    class="md:snap-start min-h-dvh w-full relative overflow-x-hidden transition-all duration-700 opacity-0 pointer-events-none flex flex-col justify-center items-center py-16"
+    data-aos
+  >
+    <Experiencia />
+  </section>
+  <section
+    id="projects"
+    class="md:snap-start min-h-dvh w-full relative overflow-x-hidden transition-all duration-700 opacity-0 pointer-events-none flex flex-col justify-center items-center py-16"
+    data-aos
+  >
+    <Proyectos />
+  </section>
+  <section
+    id="contact"
+    class="md:snap-start min-h-dvh w-full relative overflow-x-hidden transition-all duration-700 opacity-0 pointer-events-none flex flex-col justify-center items-center py-16"
+    data-aos
+  >
+    <Contacto />
+  </section>
+
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove("opacity-0", "pointer-events-none");
+            entry.target.classList.add("opacity-100", "pointer-events-auto");
+          } else {
+            entry.target.classList.add("opacity-0", "pointer-events-none");
+            entry.target.classList.remove("opacity-100", "pointer-events-auto");
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
+
+    document.querySelectorAll("[data-aos]").forEach((element) => {
+      observer.observe(element);
+    });
+  </script>
+</Layout>

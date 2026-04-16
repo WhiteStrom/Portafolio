@@ -1,0 +1,338 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Panel de Administración | Portafolio">
+  <div
+    id="admin-loader"
+    class="fixed inset-0 bg-graphite z-100 flex items-center justify-center"
+  >
+    <div class="flex flex-col items-center gap-4">
+      <div class="w-12 h-px bg-white/20 relative overflow-hidden">
+        <div
+          class="absolute inset-y-0 left-0 w-1/2 bg-white animate-[slide_1.5s_infinite]"
+        >
+        </div>
+      </div>
+      <span
+        class="text-[9px] font-black text-white/40 uppercase tracking-[0.5em]"
+        >Verificando Credenciales</span
+      >
+    </div>
+  </div>
+
+  <main class="min-h-screen bg-offWhite pt-32 pb-20 global-padding z-10">
+    <div class="max-w-4xl mx-auto space-y-12">
+      <div class="flex justify-between items-end">
+        <div class="space-y-4">
+          <div class="flex items-center gap-4 mb-2">
+            <span class="h-px w-8 bg-graphite"></span>
+            <span
+              class="text-[9px] font-black uppercase tracking-[0.5em] opacity-40"
+              >Dashboard_V1</span
+            >
+          </div>
+          <h1
+            class="text-6xl font-black text-graphite uppercase tracking-tighter"
+          >
+            Administración
+          </h1>
+        </div>
+        <button
+          id="logout-btn"
+          class="text-[10px] font-black uppercase tracking-widest text-red-500 hover:opacity-60 transition-opacity"
+          >Cerrar Sesión</button
+        >
+      </div>
+
+      <!-- Formulario para nuevo proyecto -->
+      <section
+        class="bg-white border border-graphite/5 p-10 space-y-10 shadow-sm"
+      >
+        <div class="flex items-center gap-4">
+          <span class="w-2 h-2 bg-graphite rounded-full"></span>
+          <h2 class="text-xs font-black uppercase tracking-[0.3em]">
+            Publicar Nuevo Proyecto
+          </h2>
+        </div>
+
+        <form id="project-form" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-2">
+            <label
+              class="text-[9px] font-black uppercase tracking-widest opacity-40"
+              >Título del Proyecto</label
+            >
+            <input
+              type="text"
+              name="title"
+              required
+              class="w-full bg-graphite/5 border-none p-4 text-sm outline-none focus:ring-1 ring-graphite/10"
+              placeholder="Ej: Nebula Engine"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="text-[9px] font-black uppercase tracking-widest opacity-40"
+              >Tag / Categoría</label
+            >
+            <input
+              type="text"
+              name="tag"
+              required
+              class="w-full bg-graphite/5 border-none p-4 text-sm outline-none focus:ring-1 ring-graphite/10"
+              placeholder="Ej: LOG_01 / CORE"
+            />
+          </div>
+
+          <div class="md:col-span-2 space-y-2">
+            <label
+              class="text-[9px] font-black uppercase tracking-widest opacity-40"
+              >Descripción</label
+            >
+            <textarea
+              name="description"
+              required
+              rows="3"
+              class="w-full bg-graphite/5 border-none p-4 text-sm outline-none focus:ring-1 ring-graphite/10"
+              placeholder="Describe brevemente el proyecto..."></textarea>
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="text-[9px] font-black uppercase tracking-widest opacity-40"
+              >Tecnologías (separadas por coma)</label
+            >
+            <input
+              type="text"
+              name="technologies"
+              required
+              class="w-full bg-graphite/5 border-none p-4 text-sm outline-none focus:ring-1 ring-graphite/10"
+              placeholder="React, Node.js, Supabase"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="text-[9px] font-black uppercase tracking-widest opacity-40"
+              >Orden de Visualización</label
+            >
+            <input
+              type="number"
+              name="order"
+              value="0"
+              class="w-full bg-graphite/5 border-none p-4 text-sm outline-none focus:ring-1 ring-graphite/10"
+            />
+          </div>
+
+          <div class="md:col-span-2 space-y-2">
+            <label
+              class="text-[9px] font-black uppercase tracking-widest opacity-40"
+              >Enlace del Proyecto (URL)</label
+            >
+            <input
+              type="url"
+              name="link"
+              class="w-full bg-graphite/5 border-none p-4 text-sm outline-none focus:ring-1 ring-graphite/10"
+              placeholder="https://tu-proyecto.com"
+            />
+          </div>
+
+          <div class="md:col-span-2 pt-4 flex gap-4">
+            <button
+              type="submit"
+              id="submit-btn"
+              class="bg-graphite text-white px-8 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:opacity-90 transition-opacity"
+              >Confirmar Publicación</button
+            >
+            <button
+              type="button"
+              id="cancel-edit-btn"
+              class="hidden border border-graphite/20 text-graphite px-8 py-4 text-[10px] font-black uppercase tracking-[0.3em] hover:bg-graphite/5 transition-colors"
+              >Cancelar</button
+            >
+          </div>
+        </form>
+      </section>
+
+      <!-- Lista de proyectos actuales -->
+      <section class="space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xs font-black uppercase tracking-[0.3em] opacity-40">
+            Proyectos Registrados
+          </h2>
+          <div class="h-px flex-1 mx-8 bg-graphite/5"></div>
+        </div>
+        <div
+          id="projects-list"
+          class="grid grid-cols-1 gap-px bg-graphite/5 border border-graphite/5"
+        >
+          <!-- Cargado vía JS -->
+          <div
+            class="bg-white p-8 animate-pulse text-center text-[10px] font-black opacity-20 uppercase tracking-widest"
+          >
+            Cargando base de datos...
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { supabase } from "../../lib/supabase";
+
+  let editingId: string | null = null;
+
+  // Verificación de sesión
+  async function checkAuth() {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = "/login";
+    } else {
+      document.getElementById("admin-loader")?.classList.add("hidden");
+      loadProjects();
+    }
+  }
+
+  checkAuth();
+
+  // Cerrar sesión
+  document.getElementById("logout-btn")?.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  });
+
+  // Cargar proyectos
+  async function loadProjects() {
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .order("order", { ascending: true });
+    const list = document.getElementById("projects-list");
+
+    if (list) {
+      if (error) {
+        list.innerHTML = `<div class="bg-white p-8 text-red-500">Error al cargar datos</div>`;
+        return;
+      }
+
+      // Guardar datos temporalmente para poder editarlos
+      (window as any).currentProjects = data;
+
+      list.innerHTML = data
+        .map(
+          (p: any) => `
+        <div class="bg-white p-6 flex justify-between items-center group">
+          <div class="space-y-1">
+            <span class="text-[8px] font-black opacity-20 uppercase tracking-widest">${p.tag}</span>
+            <h4 class="text-sm font-black uppercase tracking-tight">${p.title}</h4>
+          </div>
+          <div class="flex gap-4">
+            <button onclick="window.editProject('${p.id}')" class="text-[9px] font-black text-primary opacity-0 group-hover:opacity-100 uppercase tracking-widest transition-opacity hover:underline">Editar</button>
+            <button onclick="window.deleteProject('${p.id}')" class="text-[9px] font-black text-red-500 opacity-0 group-hover:opacity-100 uppercase tracking-widest transition-opacity hover:underline">Eliminar</button>
+          </div>
+        </div>
+      `,
+        )
+        .join("");
+    }
+  }
+
+  // Editar proyecto
+  (window as any).editProject = (id: string) => {
+    const project = (window as any).currentProjects?.find((p: any) => p.id === id);
+    if (!project) return;
+    
+    editingId = id;
+    const form = document.getElementById("project-form") as HTMLFormElement;
+    
+    (form.elements.namedItem("title") as HTMLInputElement).value = project.title || "";
+    (form.elements.namedItem("tag") as HTMLInputElement).value = project.tag || "";
+    (form.elements.namedItem("description") as HTMLTextAreaElement).value = project.description || "";
+    (form.elements.namedItem("technologies") as HTMLInputElement).value = (project.technologies || []).join(", ");
+    (form.elements.namedItem("order") as HTMLInputElement).value = project.order || "0";
+    (form.elements.namedItem("link") as HTMLInputElement).value = project.link || "";
+
+    document.getElementById("submit-btn")!.innerHTML = "Actualizar Proyecto";
+    document.getElementById("cancel-edit-btn")!.classList.remove("hidden");
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Cancelar Edición
+  document.getElementById("cancel-edit-btn")?.addEventListener("click", () => {
+    editingId = null;
+    const form = document.getElementById("project-form") as HTMLFormElement;
+    form.reset();
+    document.getElementById("submit-btn")!.innerHTML = "Confirmar Publicación";
+    document.getElementById("cancel-edit-btn")!.classList.add("hidden");
+  });
+
+  // Eliminar proyecto
+  (window as any).deleteProject = async (id: string) => {
+    if (confirm("¿Confirmar eliminación permanente?")) {
+      const { error } = await supabase.from("projects").delete().eq("id", id);
+      if (!error) loadProjects();
+      else alert("Error al eliminar");
+    }
+  };
+
+  // Formulario
+  const projectForm = document.getElementById(
+    "project-form",
+  ) as HTMLFormElement;
+  projectForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(projectForm);
+
+    const project = {
+      title: formData.get("title"),
+      tag: formData.get("tag"),
+      description: formData.get("description"),
+      technologies: (formData.get("technologies") as string)
+        .split(",")
+        .map((t) => t.trim()),
+      order: parseInt((formData.get("order") as string) || "0"),
+      link: formData.get("link"),
+    };
+
+    if (editingId) {
+      const { error } = await supabase.from("projects").update(project).eq("id", editingId);
+      if (!error) {
+        alert("Proyecto actualizado con éxito");
+        editingId = null;
+        document.getElementById("submit-btn")!.innerHTML = "Confirmar Publicación";
+        document.getElementById("cancel-edit-btn")!.classList.add("hidden");
+        projectForm.reset();
+        loadProjects();
+      } else {
+        console.error(error);
+        alert("Error al actualizar");
+      }
+    } else {
+      const { error } = await supabase.from("projects").insert([project]);
+      if (!error) {
+        alert("Proyecto publicado con éxito");
+        projectForm.reset();
+        loadProjects();
+      } else {
+        console.error(error);
+        alert("Error en la publicación");
+      }
+    }
+  });
+</script>
+
+<style>
+  @keyframes slide {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(200%);
+    }
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+import "../styles/global.css";
+import Header from "../components/Estructura/header.astro";
+import Footer from "../components/Estructura/footer.astro";
+import { ClientRouter } from "astro:transitions";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { 
+  title = "Portafolio | Romeo Pérez", 
+  description = "Portafolio profesional de Romeo Pérez, Desarrollador de Software enfocado en soluciones escalables y web modernas."
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Romeo Pérez" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/favicon.svg" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content="/favicon.svg" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <ClientRouter />
+  </head>
+
+  <body
+    class="antialiased selection:bg-graphite selection:text-offWhite h-dvh overflow-hidden"
+  >
+    <div class="fixed inset-0 mesh-pattern pointer-events-none z-0"></div>
+    <Header title="Encabezado" />
+
+    <main
+      class="h-dvh w-full overflow-y-auto overflow-x-hidden md:snap-y md:snap-mandatory scroll-smooth"
+    >
+      <slot />
+      <Footer title="Footer" />
+    </main>
+  </body>
+</html>

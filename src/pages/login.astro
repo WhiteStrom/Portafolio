@@ -1,0 +1,130 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Acceso Privado | Portafolio">
+  <main
+    class="min-h-dvh h-full w-full flex items-center justify-center bg-offWhite relative overflow-hidden"
+  >
+    <!-- Fondo decorativo -->
+    <div class="fixed inset-0 blueprint-grid opacity-30 pointer-events-none">
+    </div>
+    <div class="absolute inset-0 opacity-20 pointer-events-none">
+      <div
+        class="absolute top-1/4 left-1/4 w-96 h-96 bg-graphite/5 rounded-full blur-[120px]"
+      >
+      </div>
+      <div
+        class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-graphite/5 rounded-full blur-[120px]"
+      >
+      </div>
+    </div>
+
+    <div
+      class="relative z-10 w-full max-w-md p-8 border border-[#dbe0e6] bg-white/70 backdrop-blur-sm shadow-xl"
+    >
+      <div class="space-y-8">
+        <div class="text-center space-y-2">
+          <div class="flex justify-center mb-6">
+            <span class="h-px w-12 bg-graphite/30"></span>
+          </div>
+          <h1
+            class="text-4xl font-black text-graphite uppercase tracking-tighter"
+          >
+            Terminal_Auth
+          </h1>
+          <p
+            class="text-[10px] font-black text-graphite/60 uppercase tracking-[0.4em]"
+          >
+            Acceso Restringido / Nivel 01
+          </p>
+        </div>
+
+        <form id="login-form" class="space-y-6">
+          <div class="space-y-2">
+            <label
+              class="text-[9px] font-black text-graphite/60 uppercase tracking-widest pl-1"
+              >Identificador</label
+            >
+            <input
+              type="email"
+              id="email"
+              placeholder="admin@example.com"
+              class="w-full bg-white border border-[#dbe0e6] p-4 text-graphite text-sm outline-none focus:border-graphite/40 transition-colors tracking-widest placeholder:text-graphite/30"
+              required
+            />
+          </div>
+          <div class="space-y-2">
+            <label
+              class="text-[9px] font-black text-graphite/60 uppercase tracking-widest pl-1"
+              >Código de Acceso</label
+            >
+            <input
+              type="password"
+              id="password"
+              placeholder="••••••••"
+              class="w-full bg-white border border-[#dbe0e6] p-4 text-graphite text-sm outline-none focus:border-graphite/40 transition-colors tracking-widest placeholder:text-graphite/30"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-graphite text-white p-4 text-[11px] font-black uppercase tracking-[0.2em] hover:bg-graphite/90 transition-all transform active:scale-[0.98] mt-6"
+          >
+            Sincronizar Acceso
+          </button>
+
+          <a
+            href="/"
+            class="block w-full text-center border border-[#dbe0e6] text-graphite p-4 text-[11px] font-black uppercase tracking-[0.2em] hover:bg-graphite/5 transition-colors"
+          >
+            Regresar al Inicio
+          </a>
+        </form>
+
+        <div
+          id="error-msg"
+          class="hidden text-center text-[10px] font-black text-red-500 tracking-widest"
+        >
+          Error de Sincronización: Credenciales Inválidas
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { supabase } from "../lib/supabase";
+
+  const form = document.getElementById("login-form");
+  const errorMsg = document.getElementById("error-msg");
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = (document.getElementById("email") as HTMLInputElement).value;
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      if (errorMsg) {
+        errorMsg.classList.remove("hidden");
+        // Mostrar la razón exacta del error (ej. Unconfirmed email, Invalid login credentials, etc)
+        errorMsg.innerText = `Error: ${error.message}`;
+      }
+    } else {
+      window.location.href = "/admin";
+    }
+  });
+</script>
+
+<style>
+  .outline-text {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+  }
+</style>

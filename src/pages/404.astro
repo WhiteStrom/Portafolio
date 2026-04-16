@@ -1,0 +1,43 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404: Sistema No Encontrado">
+  <main class="min-h-screen bg-[#111418] text-white flex flex-col items-center justify-center relative overflow-hidden">
+    <!-- Background Grid -->
+    <div class="fixed inset-0 blueprint-grid opacity-20 pointer-events-none"></div>
+    
+    <div class="z-10 flex flex-col items-center text-center px-6">
+      <div class="relative group cursor-pointer mb-8">
+        <div class="text-[120px] md:text-[200px] font-black tracking-tighter leading-none text-primary/80 group-hover:text-primary transition-colors mix-blend-screen">
+          404
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-opacity mix-blend-difference pointer-events-none text-white">
+          <span class="material-symbols-outlined text-8xl md:text-9xl">warning</span>
+        </div>
+      </div>
+      
+      <h1 class="text-2xl md:text-4xl font-bold uppercase tracking-[0.2em] mb-4">
+        Sector <span class="text-primary italic">Inaccesible</span>
+      </h1>
+      
+      <p class="text-sm md:text-base text-white/50 max-w-md mx-auto mb-10 tracking-widest uppercase">
+        El directorio solicitado no existe o ha sido reubicado en otra partición del sistema.
+      </p>
+
+      <a href="/" class="group flex items-center gap-4 bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/10 px-8 py-4 transition-all uppercase text-[10px] md:text-xs font-black tracking-[0.3em]">
+        <span class="material-symbols-outlined text-lg group-hover:-translate-x-2 transition-transform">arrow_back</span>
+        Volver al Inicio
+      </a>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="absolute top-10 left-10 md:top-20 md:left-20">
+      <div class="text-[8px] md:text-[10px] text-primary/60 font-mono tracking-widest uppercase">
+        ERR_CODE: 0x000404<br/>
+        STATUS: NOT_FOUND<br/>
+        RESYNC: REQUIRED
+      </div>
+    </div>
+  </main>
+</Layout>

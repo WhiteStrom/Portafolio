@@ -1,0 +1,124 @@
+<header
+  class="fixed top-0 left-0 right-0 z-50 bg-offWhite/60 backdrop-blur-xl border-b border-graphite/5 transition-all duration-300"
+>
+  <div
+    class="max-w-8xl mx-auto flex items-center justify-between px-6 md:px-8 py-3"
+  >
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-3 group">
+      <div
+        class="w-8 h-8 md:w-9 md:h-9 bg-graphite flex items-center justify-center group-hover:scale-110 transition-transform"
+      >
+        <span class="material-symbols-outlined text-white text-sm md:text-base"
+          >architecture</span
+        >
+      </div>
+      <h2
+        class="text-[10px] md:text-xs font-black tracking-[0.3em] uppercase text-graphite group-hover:opacity-70 transition-opacity"
+      >
+        Portafolio
+      </h2>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-6.5 xl:gap-9.5">
+      <a class="nav-link" href="#home">Inicio</a>
+      <a class="nav-link" href="#stack">Habilidades Técnicas</a>
+      <a class="nav-link" href="#experience">Experiencia y Educación</a>
+      <a class="nav-link" href="#projects">Proyectos</a>
+      <a class="nav-link" href="#contact">Contacto</a>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="menu-toggle"
+      class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1 focus:outline-none"
+      aria-label="Toggle Menu"
+    >
+      <span
+        class="w-6 h-px bg-graphite transition-all duration-300 origin-center"
+        id="bar1"></span>
+      <span class="w-6 h-px bg-graphite transition-all duration-300" id="bar2"
+      ></span>
+      <span
+        class="w-6 h-px bg-graphite transition-all duration-300 origin-center"
+        id="bar3"></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 w-full h-dvh bg-offWhite/80 backdrop-blur-md z-[9999] flex flex-col items-center justify-center gap-10 transition-all duration-500 translate-x-full lg:hidden"
+>
+  <nav class="flex flex-col items-center gap-8">
+    <a class="nav-link" href="#home" data-close-menu>Inicio</a>
+    <a class="nav-link" href="#stack" data-close-menu>Habilidades Técnicas</a>
+    <a class="nav-link" href="#experience" data-close-menu
+      >Experiencia y Educación</a
+    >
+    <a class="nav-link" href="#projects" data-close-menu>Proyectos</a>
+    <a class="nav-link" href="#contact" data-close-menu>Contacto</a>
+  </nav>
+
+  <div class="flex flex-col items-center gap-4 opacity-40">
+    <span class="text-[10px] font-black tracking-[0.5em] uppercase"
+      >Romeo Isaac Pérez Flores</span
+    >
+    <div class="w-68 h-px bg-graphite"></div>
+    <span class="text-[10px] font-black tracking-[0.5em] uppercase"
+      >Lic. en Informática</span
+    >
+  </div>
+
+  <button
+    id="menu-close"
+    class="absolute bottom-12 left-1/2 -translate-x-1/2 w-16 h-16 flex items-center justify-center bg-graphite text-white rounded-full focus:outline-none hover:scale-110 active:scale-95 transition-all shadow-2xl"
+  >
+    <span class="material-symbols-outlined text-4xl">close</span>
+  </button>
+</div>
+
+<style>
+  @reference "tailwindcss";
+  @reference "../../styles/global.css";
+
+  .nav-link {
+    @apply text-[12.6px] font-black uppercase tracking-[0.2em] text-black hover:text-graphite transition-colors relative;
+  }
+
+  .nav-link::after {
+    content: "";
+    @apply absolute -bottom-1 left-0 w-0 h-[2px] bg-graphite transition-all duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+</style>
+
+<script>
+  const toggleBtn = document.getElementById("menu-toggle");
+  const closeBtn = document.getElementById("menu-close");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuLinks = document.querySelectorAll("[data-close-menu]");
+
+  const openMenu = () => {
+    mobileMenu?.classList.remove("translate-x-full");
+    document.body.style.overflow = "hidden"; // Prevent background scroll
+  };
+
+  const closeMenu = () => {
+    mobileMenu?.classList.add("translate-x-full");
+    document.body.style.overflow = ""; // Restore scroll
+  };
+
+  if (toggleBtn && mobileMenu && closeBtn) {
+    toggleBtn.addEventListener("click", openMenu);
+    closeBtn.addEventListener("click", closeMenu);
+
+    menuLinks.forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+  }
+</script>

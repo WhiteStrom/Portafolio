@@ -1,0 +1,205 @@
+---
+import { supabase } from "../lib/supabase";
+
+interface Project {
+  data: {
+    title: string;
+    description: string;
+    tag: string;
+    technologies: string[];
+    order: number;
+    link?: string;
+  };
+}
+
+// Obtener proyectos únicamente de Supabase
+let projects: Project[] = [];
+try {
+  console.log("--- SUPABASE FETCH START ---");
+  const {
+    data: supabaseProjects,
+    error,
+    status,
+  } = await supabase
+    .from("projects")
+    .select("*")
+    .order("order", { ascending: true });
+
+  console.log("Supabase Status:", status);
+  if (error) console.error("Supabase Fetch Error:", error);
+
+  if (supabaseProjects) {
+    console.log("Projects count from DB:", supabaseProjects.length);
+    projects = supabaseProjects.map((p: any) => ({
+      data: {
+        title: p.title,
+        description: p.description,
+        tag: p.tag,
+        technologies: p.technologies || [],
+        order: p.order || 0,
+        link: p.link || "#",
+      },
+    }));
+  } else {
+    console.log("No data returned from projects table");
+  }
+} catch (e) {
+  console.error("Critical error in Supabase connection:", e);
+}
+
+const sortedProjects = projects.sort(
+  (a: Project, b: Project) => (a.data.order || 0) - (b.data.order || 0),
+);
+---
+
+<div
+  class="antialiased selection:bg-graphite selection:text-offWhite overflow-x-hidden min-h-full"
+>
+  <div
+    class="hidden md:flex fixed right-[64px] top-0 bottom-0 z-50 flex-col items-center justify-center gap-5 py-8"
+  >
+    <div
+      class="vertical-text text-[8px] font-black tracking-[0.3em] uppercase opacity-30"
+    >
+      Sección 04 / Proyectos
+    </div>
+    <div class="w-px h-32 bg-graphite/10 relative">
+      <div class="absolute bottom-0 left-0 w-full h-[25%] bg-graphite"></div>
+    </div>
+    <span class="text-[9px] font-black tracking-[0.2em] opacity-40">04</span>
+  </div>
+  <main
+    class="relative min-h-full w-full flex flex-col justify-center items-center pt-4 md:pt-8 px-[var(--layout-padding)] z-10 pb-8"
+  >
+    <div class="max-w-7xl w-full mx-auto space-y-5 md:space-y-8">
+      <div class="space-y-2">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="h-px w-12 bg-graphite"></span>
+          <span
+            class="text-[10px] font-black uppercase tracking-[0.5em] opacity-60"
+            >Catálogo de Proyectos</span
+          >
+        </div>
+        <h1
+          class="text-[clamp(1.665rem,5.4vw,3.6rem)] font-black tracking-tighter text-graphite uppercase leading-[0.85]"
+        >
+          Proyectos<br />
+          <span class="text-transparent outline-text">Registrados</span>
+        </h1>
+      </div>
+
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[clamp(0.4rem,1.6vw,1.2rem)]"
+      >
+        {
+          projects.length === 0 && (
+            <div class="col-span-full py-16 text-center space-y-2 opacity-30">
+              <span class="material-symbols-outlined text-4xl">
+                database_off
+              </span>
+              <p class="text-[10px] font-black uppercase tracking-[0.5em]">
+                Esperando datos de la base de datos...
+              </p>
+            </div>
+          )
+        }
+
+        {
+          sortedProjects.map((project: Project) => (
+            <a
+              href={project.data.link}
+              target="_blank"
+              class="bg-offWhite p-3 md:p-5 lg:p-6 flex flex-col h-full gap-2.5 md:gap-5 project-card hover:bg-graphite/[0.02] transition-colors group"
+            >
+              <div class="flex justify-between items-start">
+                <span class="text-[clamp(0.5rem,0.7vw,0.65rem)] font-bold uppercase tracking-widest px-2.5 py-1 md:px-3 md:py-1.5 border border-graphite/10">
+                  {project.data.tag}
+                </span>
+                <span class="material-symbols-outlined text-sm opacity-20 group-hover:opacity-100 transition-opacity">
+                  arrow_outward
+                </span>
+              </div>
+
+              <div class="flex flex-col flex-grow gap-2 md:gap-4">
+                <h3 class="text-[clamp(0.81rem,1.35vw,0.99rem)] font-black uppercase tracking-tight">
+                  {project.data.title}
+                </h3>
+                <p class="text-[clamp(0.7rem,1vw,0.8rem)] font-medium text-graphite/70 leading-relaxed max-h-[4.5rem] md:max-h-max overflow-hidden text-ellipsis line-clamp-3 md:line-clamp-none">
+                  {project.data.description}
+                </p>
+              </div>
+
+              <div class="pt-4 border-t border-graphite/10 flex justify-between items-end gap-3 mt-auto w-full">
+                <div class="flex flex-wrap gap-2">
+                  {project.data.technologies.slice(0, 3).map((tech: string) => (
+                    <span class="text-[clamp(0.5rem,0.7vw,0.65rem)] font-bold uppercase tracking-widest border border-graphite/10 px-2 py-1">
+                      {tech}
+                    </span>
+                  ))}
+                  {project.data.technologies.length > 3 && (
+                    <span class="text-[8px] md:text-[10px] font-bold uppercase tracking-widest border border-graphite/10 px-2 py-1 text-graphite/50">
+                      +{project.data.technologies.length - 3}
+                    </span>
+                  )}
+                </div>
+                <button class="shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full border border-graphite/20 flex items-center justify-center group-hover:bg-graphite group-hover:text-offWhite transition-colors">
+                  <span class="material-symbols-outlined text-[12px] md:text-sm">
+                    arrow_forward
+                  </span>
+                </button>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+    <div
+      class="fixed bottom-[32px] lg:bottom-[64px] left-[32px] lg:left-[64px] right-[32px] lg:right-[64px] flex justify-between items-end pointer-events-none opacity-0 lg:opacity-100 transition-opacity"
+    >
+      <div class="flex flex-col gap-6">
+        <div
+          class="flex gap-10 text-[9px] font-black tracking-[0.3em] uppercase opacity-40"
+        >
+          <span class="flex items-center gap-3">Dist/004</span>
+          <span class="flex items-center gap-3">Logs/V.1</span>
+          <span class="flex items-center gap-3">2026 ©</span>
+        </div>
+        <div class="flex flex-col gap-2">
+          <p
+            class="text-[10px] font-black uppercase tracking-[0.4em] opacity-40"
+          >
+            Sincronización DB
+          </p>
+          <div class="w-32 h-px bg-graphite/10 relative overflow-hidden">
+            <div class="absolute inset-y-0 left-0 w-full bg-graphite/20"></div>
+            <div
+              class="absolute inset-y-0 left-0 w-1/3 bg-graphite animate-[shimmer_2s_infinite]"
+            >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="hidden lg:flex flex-col items-end gap-2 text-[9px] font-black tracking-[0.4em] uppercase text-graphite/40"
+      >
+        <span>Cloud Infrastructure</span>
+        <span>Database Managed</span>
+        <span>Real-time Sync</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<style>
+  .outline-text {
+    -webkit-text-stroke: 1px var(--graphite);
+  }
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(300%);
+    }
+  }
+</style>
